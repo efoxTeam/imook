@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {FC} from 'react'
 import CounterComp from 'src/component/CounterComp'
-const App = (): any => <CounterComp />
+const App: FC = () => <CounterComp />
 export default App

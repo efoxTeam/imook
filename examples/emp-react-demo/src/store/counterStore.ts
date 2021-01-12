@@ -10,6 +10,16 @@ const counterStore = createLocalStore(initialState, {
       draftStore.state += step
     })
   },
+  dec({commit}: CounterActUtil) {
+    commit(draftStore => {
+      draftStore.state -= 1
+    })
+  },
+  reset({commit}: CounterActUtil) {
+    commit(draftStore => {
+      draftStore.state = initialState
+    })
+  },
 })
 
 export default counterStore
