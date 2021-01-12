@@ -7,12 +7,12 @@ function Counter() {
   return (
     <div>
       count:{count}
-      <button onClick={()=>inc()}>+</button>
+      <button onClick={() => inc()}>+</button>
     </div>
   )
 }
 
-export default function CounterComp() {
+export default function CounterComp(): any {
   return (
     <counterStore.Provider>
       <Counter />
