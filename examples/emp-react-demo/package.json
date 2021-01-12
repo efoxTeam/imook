@@ -1,0 +1,23 @@
+{
+  "name": "emp-react-demo",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "private": "true",
+  "devDependencies": {
+    "@efox/emp-cli": "^1.6.13",
+    "@efox/eslint-config-react-prittier-ts": "^1.2.3"
+  },
+  "scripts": {
+    "dev": "emp dev",
+    "dev:hot": "emp dev --hot",
+    "build": "emp build",
+    "start": "emp serve",
+    "emp": "emp",
+    "lint": "eslint . --ext js,ts,tsx --fix"
+  },
+  "dependencies": {
+    "react": "^17.0.1",
+    "react-dom": "^17.0.1"
+  }
+}
