@@ -27,8 +27,10 @@ const Provider = ({stores, children}: ComProviderProps): JSX.Element => {
   return <CompProvider>{children}</CompProvider>
 }
 
-export const withStores = (Component: (props: any) => JSX.Element, stores: ComProviderProps['stores']): React.FC => {
-  const Wrapper: React.FC = props => (
+type ReFC = React.FC<Record<string, any>>
+
+export const withStores = (Component: (props: any) => JSX.Element, stores: ComProviderProps['stores']): ReFC => {
+  const Wrapper: ReFC = props => (
     <Provider stores={stores}>
       <Component {...props} />
     </Provider>

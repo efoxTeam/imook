@@ -9,7 +9,7 @@ export default [
   // CommonJS
   {
     input: 'src/index.ts',
-    output: {file: 'lib/imook.js', format: 'cjs', indent: false},
+    output: {file: 'lib/imook.js', format: 'cjs', indent: false, exports: 'named'},
     external,
     plugins: [
       nodeResolve({

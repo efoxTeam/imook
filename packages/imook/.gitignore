@@ -1,0 +1,11 @@
+/node_modules/
+
+lib/
+/types/
+
+src/
+
+*.log
+.cache
+
+.history
