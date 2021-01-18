@@ -17,7 +17,7 @@
     "lint": "eslint . --ext js,ts,tsx --fix"
   },
   "dependencies": {
-    "@efox/imook": "^1.0.0",
+    "@efox/imook": "1.1.0",
     "react": "^17.0.1",
     "react-dom": "^17.0.1"
   }
