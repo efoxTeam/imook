@@ -4,19 +4,20 @@ import {Random} from '../Random'
 import {useTracked} from './state'
 
 let numRendered = 0
-const FristName = ({name, setState}: any) => {
+const Input = ({name, setState, state}: any) => {
   return (
     <div>
       First Name:
       <input
-        value={name}
+        value={state.person[name]}
         onChange={event => {
-          const firstName = event.target.value
+          const person: any = {}
+          person[name] = event.target.value
           setState((s: any) => ({
             ...s,
             person: {
               ...s.person,
-              firstName,
+              ...person,
             },
           }))
         }}
@@ -25,45 +26,16 @@ const FristName = ({name, setState}: any) => {
     </div>
   )
 }
+
 const Person: React.FC = () => {
   const [state, setState] = useTracked()
   return (
     <div>
       numRendered: {++numRendered}
       <Random />
-      <FristName name={state.person.firstName} setState={setState} />
-      <div>
-        Last Name:
-        <input
-          value={state.person.lastName}
-          onChange={event => {
-            const lastName = event.target.value
-            setState(s => ({
-              ...s,
-              person: {
-                ...s.person,
-                lastName,
-              },
-            }))
-          }}
-        />
-      </div>
-      <div>
-        Age:
-        <input
-          value={state.person.age}
-          onChange={event => {
-            const age = Number(event.target.value) || 0
-            setState(s => ({
-              ...s,
-              person: {
-                ...s.person,
-                age,
-              },
-            }))
-          }}
-        />
-      </div>
+      <Input name={'firstName'} state={state} setState={setState} />
+      <Input name={'lastName'} state={state} setState={setState} />
+      <Input name={'age'} state={state} setState={setState} />
     </div>
   )
 }
