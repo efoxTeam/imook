@@ -4,11 +4,12 @@ import {Random} from '../Random'
 import {useDispatch, useTrackedState} from './store'
 
 let numRendered = 0
-const Input = ({name, state}: any) => {
+const Input = ({name}: any) => {
   const dispatch = useDispatch()
+  const state: any = useTrackedState()
   return (
     <div>
-      First Name:
+      {name}:
       <input
         value={state.person[name]}
         onChange={event => {
@@ -32,14 +33,13 @@ const Input = ({name, state}: any) => {
 }
 
 const Person: React.FC = () => {
-  const state = useTrackedState()
   return (
     <div>
       numRendered: {++numRendered}
       <Random />
-      <Input name={'firstName'} state={state} />
-      <Input name={'lastName'} state={state} />
-      <Input name={'age'} state={state} />
+      <Input name={'firstName'} />
+      <Input name={'lastName'} />
+      <Input name={'age'} />
     </div>
   )
 }
