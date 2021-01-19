@@ -1,35 +1,21 @@
 import * as React from 'react'
-import {ActionCreatorsMapObject, SubCtsxMapObject, Actions, ScopeStore, UpdateStore} from './types/store'
+import {ActionCreatorsMapObject, Actions, ScopeStore, UpdateStore} from './types/store'
 import produce from 'immer'
-import {EmptyObj} from './types/common'
+import {createContainer} from 'react-tracked'
 
 const UNIQUE_SYMBOL = Symbol()
-const UNDEFINED = void 0
 
-export default function createLocalStore<
-  I,
-  A extends ActionCreatorsMapObject<I, A>,
-  S extends Record<string, (state: I) => any>
->(initialState: I, actionCreatorsMap: A, subscriptionsMap?: S): ScopeStore<I, A, S> {
-  // initialize contexts
-  const StateContext = React.createContext<I>(initialState)
+export default function createLocalStore<I, A extends ActionCreatorsMapObject<I, A>>(
+  initialState: I,
+  actionCreatorsMap: A,
+): ScopeStore<I, A> {
   const DispatcherContext = React.createContext<Actions<I, A> | typeof UNIQUE_SYMBOL>(UNIQUE_SYMBOL)
+  const useMyState = () => React.useState(initialState)
+  const {Provider: TrackProvider, useTracked} = createContainer(useMyState)
 
-  const subCtxsMap: SubCtsxMapObject<S, any> | EmptyObj = {}
-  const subCtxs: any[] = []
-  const isSubscriptionsMapObject = typeof subscriptionsMap === 'object'
-  const subscriptions = isSubscriptionsMapObject ? Object.values(subscriptionsMap as S) : []
-  if (isSubscriptionsMapObject) {
-    for (const key in subscriptionsMap) {
-      const Ctx = React.createContext(subscriptionsMap[key](initialState))
-      subCtxs.push(Ctx)
-      ;(subCtxsMap as SubCtsxMapObject<S, any>)[key] = Ctx
-    }
-  }
-
-  function Provider({children}: {children: React.ReactNode}) {
-    const [state, setState] = React.useState(initialState)
-    const stateRef = React.useRef(initialState)
+  function ActionProvider({children}: {children: React.ReactNode}) {
+    const [trackState, setTrackState] = useTracked()
+    const stateRef = React.useRef(trackState)
 
     // persist Actions
     const memoActions = React.useMemo(() => {
@@ -37,26 +23,23 @@ export default function createLocalStore<
       const updateStore: UpdateStore<I> = updater => {
         const {state} = produce({state: stateRef.current}, updater)
         stateRef.current = state
-        setState(state)
+        setTrackState(state)
         return state
       }
       for (const key in actionCreatorsMap) {
         actions[key] = (...args: any[]) => actionCreatorsMap[key]({commit: updateStore, stateRef}, ...args)
       }
       return actions
-    }, [])
+    }, [setTrackState])
 
+    return <DispatcherContext.Provider value={memoActions}>{children}</DispatcherContext.Provider>
+  }
+
+  function Provider({children}: {children: React.ReactNode}) {
     return (
-      <DispatcherContext.Provider value={memoActions}>
-        <StateContext.Provider value={state}>
-          {subCtxs.length
-            ? subCtxs.reduce(
-                (prev, ctx, idx) => <ctx.Provider value={subscriptions[idx](state)}>{prev}</ctx.Provider>,
-                children,
-              )
-            : children}
-        </StateContext.Provider>
-      </DispatcherContext.Provider>
+      <TrackProvider>
+        <ActionProvider>{children}</ActionProvider>
+      </TrackProvider>
     )
   }
 
@@ -69,26 +52,13 @@ export default function createLocalStore<
   }
 
   const useStore = (): [I, Actions<I, A>] => {
-    return [React.useContext(StateContext), useActions()]
-  }
-
-  const useSubscribe = <K extends keyof S>(subKey: K) => {
-    if (subKey === UNDEFINED) throw new Error('useSubscribe requires a key as a parameter, Please check')
-
-    const ctx = (subCtxsMap as SubCtsxMapObject<S, any>)[subKey]
-
-    if (ctx === UNDEFINED)
-      throw new Error(
-        `subscription has no a attribute named ${subKey},Please check! Or you don't pass in subscription as the third parameter when creatingScopeStore`,
-      )
-    return React.useContext(ctx)
+    return [useTracked()['0'], useActions()]
   }
 
   return {
     Provider,
     useActions,
     useStore,
-    useSubscribe,
   }
 }
 

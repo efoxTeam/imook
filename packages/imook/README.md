@@ -10,9 +10,9 @@
   </thead>
   <tbody>
     <tr>
-      <td><a href="https://codesandbox.io/s/counter-41wuk" rel="nofollow">Counter</a></td>
-      <td><a href="https://codesandbox.io/s/i18n-3t08r" rel="nofollow">I18n</a></td>
-      <td><a href="https://codesandbox.io/s/todos-unjoe" rel="nofollow">Todos</a></td>
+      <td><a href="https://codesandbox.io/s/counter-tracked-68lq9" rel="nofollow">Counter</a></td>
+      <td><a href="https://codesandbox.io/s/i18n-track-mffq5" rel="nofollow">I18n</a></td>
+      <td><a href="https://codesandbox.io/s/todos-tracked-w5pm3" rel="nofollow">Todos</a></td>
     </tr>
   </tbody>
 </table>
@@ -81,8 +81,8 @@ export default function Counter() {
 ```
 
 ## 💡API
-### ```createLocalStore(initialState, actionCreators [, subscriptions])```
-createLocalStore接收初始状态initialState和用于修改状态的[actionCreators](#actioncreators)，还有可选的订阅项[subscriptions](#subscriptions)，返回一个[localStore](#localstore)对象
+### ```createLocalStore(initialState, actionCreators)```
+createLocalStore接收初始状态initialState和用于修改状态的[actionCreators](#actioncreators)，返回一个[localStore](#localstore)对象
 
 #### ```actionCreators```
 action生成器对象，属性为任意的函数，函数第一个参数默认为ActUtil（action的工具类）。
@@ -108,17 +108,6 @@ const actionCreators = {
   }
 }
 ```
-#### ```subscriptions```
-状态的订阅项，属性为接受state作为参数的纯函数，用于定制更新和生成衍生数据。
-```ts
-const subscriptions = {
-  // 只订阅了name，只有name改变了才会重渲染
-  name: (info: StateType) => info.name,
-  // 订阅了gender，实现衍生数据
-  genderText: (info: StateType) => (info.gender === 0 ? "女" : "男")
-}
-```
-
 
 #### ```localStore```
 局部的store, 包含作用区间的Provider和对应的hooks方法；多个store之间可以通过imook暴露的withStores或Provider进行自动组合。

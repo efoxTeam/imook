@@ -2,9 +2,10 @@ import babel from 'rollup-plugin-babel'
 import typescript from 'rollup-plugin-typescript2'
 import {terser} from 'rollup-plugin-terser'
 import copy from 'rollup-plugin-copy'
+import pkg from './package.json'
 
 const extensions = ['.ts', '.tsx']
-const external = ['react']
+const external = [...Object.keys(pkg.peerDependencies || {}), ...Object.keys(pkg.dependencies || {})]
 
 export default [
   // CommonJS
