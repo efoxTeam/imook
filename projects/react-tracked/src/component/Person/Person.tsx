@@ -4,10 +4,11 @@ import {Random} from '../Random'
 import {useTracked} from './state'
 
 let numRendered = 0
-const Input = ({name, setState, state}: any) => {
+const Input = ({name}: any) => {
+  const [state, setState]: any = useTracked()
   return (
     <div>
-      First Name:
+      {name}:
       <input
         value={state.person[name]}
         onChange={event => {
@@ -28,14 +29,13 @@ const Input = ({name, setState, state}: any) => {
 }
 
 const Person: React.FC = () => {
-  const [state, setState] = useTracked()
   return (
     <div>
       numRendered: {++numRendered}
       <Random />
-      <Input name={'firstName'} state={state} setState={setState} />
-      <Input name={'lastName'} state={state} setState={setState} />
-      <Input name={'age'} state={state} setState={setState} />
+      <Input name={'firstName'} />
+      <Input name={'lastName'} />
+      <Input name={'age'} />
     </div>
   )
 }
