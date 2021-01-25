@@ -6,7 +6,8 @@
   "private": "true",
   "devDependencies": {
     "@efox/emp-cli": "^1.6.13",
-    "@efox/eslint-config-react-prittier-ts": "^1.2.4"
+    "@efox/eslint-config-react-prittier-ts": "^1.2.4",
+    "@types/react-router-dom": "^5.1.7"
   },
   "scripts": {
     "dev": "emp dev",
@@ -17,8 +18,11 @@
     "lint": "eslint . --ext js,ts,tsx --fix"
   },
   "dependencies": {
+    "mobx": "^6.0.5",
+    "mobx-react": "^7.0.6",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
+    "react-router-dom": "^5.2.0",
     "react-tracked": "^1.6.3",
     "scheduler": "^0.20.1"
   }
