@@ -1,5 +1,5 @@
 import React from 'react'
-import {BrowserRouter as Router, Switch, Route, Link} from 'react-router-dom'
+import {HashRouter as Router, Switch, Route, Link} from 'react-router-dom'
 import Counter from 'src/component/Counter'
 import Person from 'src/component/Person'
 import PersonRedux from 'src/component/PersonRedux'
